@@ -1,34 +1,34 @@
 <?php require_once('Connections/infoconn.php'); ?>
 <?php
 if (!function_exists("GetSQLValueString")) {
-function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
-{
-  if (PHP_VERSION < 6) {
-    $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
-  }
+  function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "")
+  {
+    if (PHP_VERSION < 6) {
+      $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
+    }
 
-  $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
+    $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
 
-  switch ($theType) {
-    case "text":
-      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
-      break;    
-    case "long":
-    case "int":
-      $theValue = ($theValue != "") ? intval($theValue) : "NULL";
-      break;
-    case "double":
-      $theValue = ($theValue != "") ? doubleval($theValue) : "NULL";
-      break;
-    case "date":
-      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
-      break;
-    case "defined":
-      $theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
-      break;
+    switch ($theType) {
+      case "text":
+        $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+        break;
+      case "long":
+      case "int":
+        $theValue = ($theValue != "") ? intval($theValue) : "NULL";
+        break;
+      case "double":
+        $theValue = ($theValue != "") ? doubleval($theValue) : "NULL";
+        break;
+      case "date":
+        $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+        break;
+      case "defined":
+        $theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
+        break;
+    }
+    return $theValue;
   }
-  return $theValue;
-}
 }
 
 $currentPage = $_SERVER["PHP_SELF"];
@@ -52,15 +52,17 @@ if (isset($_GET['totalRows_Recordset1'])) {
   $all_Recordset1 = mysql_query($query_Recordset1);
   $totalRows_Recordset1 = mysql_num_rows($all_Recordset1);
 }
-$totalPages_Recordset1 = ceil($totalRows_Recordset1/$maxRows_Recordset1)-1;
+$totalPages_Recordset1 = ceil($totalRows_Recordset1 / $maxRows_Recordset1) - 1;
 
 $queryString_Recordset1 = "";
 if (!empty($_SERVER['QUERY_STRING'])) {
   $params = explode("&", $_SERVER['QUERY_STRING']);
   $newParams = array();
   foreach ($params as $param) {
-    if (stristr($param, "pageNum_Recordset1") == false && 
-        stristr($param, "totalRows_Recordset1") == false) {
+    if (
+      stristr($param, "pageNum_Recordset1") == false &&
+      stristr($param, "totalRows_Recordset1") == false
+    ) {
       array_push($newParams, $param);
     }
   }
@@ -77,13 +79,11 @@ $queryString_Recordset1 = sprintf("&totalRows_Recordset1=%d%s", $totalRows_Recor
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>學員資料管理系統</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
-    integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
   <link rel="shortcut icon" type="image/x-icon" href="style/images/favicon.png" />
   <link rel="stylesheet" type="text/css" href="style.css" media="all" />
   <link href='http://fonts.googleapis.com/css?family=Amaranth' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700,700italic' rel='stylesheet'
-    type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
   <!--[if IE 7]>
 <link rel="stylesheet" type="text/css" href="style/css/ie7.css" media="all" />
 <![endif]-->
@@ -101,11 +101,8 @@ $queryString_Recordset1 = sprintf("&totalRows_Recordset1=%d%s", $totalRows_Recor
   <script type="text/javascript" src="style/js/jquery.flexslider-min.js"></script>
   <script type="text/javascript" src="style/js/jquery.masonry.min.js"></script>
   <script type="text/javascript" src="style/js/jquery.slickforms.js"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"
-    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
-    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -143,8 +140,8 @@ $queryString_Recordset1 = sprintf("&totalRows_Recordset1=%d%s", $totalRows_Recor
       <!-- Begin Table -->
       <br />
       <div class="line"></div>
-      
-      <table class="table-responsive">
+
+      <table>
         <thead>
           <tr>
             <th class="text-center">
@@ -177,28 +174,27 @@ $queryString_Recordset1 = sprintf("&totalRows_Recordset1=%d%s", $totalRows_Recor
           </tr>
         </thead>
         <tbody>
-        <?php do { ?>
-          <tr>
-            <td class="text-center"><?php echo $row_Recordset1['stud_no']; ?></td>
-            <td class="text-center"><a href="detail.php?no=<?php echo $row_Recordset1['stud_no']; ?>"><?php echo $row_Recordset1['stud_name']; ?></a></td>
-            <td class="text-center"><?php echo $row_Recordset1['stud_sex']; ?></td>
-            <td class="text-center"><?php echo $row_Recordset1['stud_birthday']; ?></td>
-            <td class="text-center"><?php echo $row_Recordset1['stud_idno']; ?></td>
-            <td><?php echo $row_Recordset1['stud_school']; ?></td>
-            <td><?php echo $row_Recordset1['stud_department']; ?></td>
-            <td class="text-center"><?php echo $row_Recordset1['stud_phone']; ?></td>
-            <td class="text-center"><?php echo $row_Recordset1['stud_hits']; ?></td>
-          </tr>
-        <?php } while ($row_Recordset1 = mysql_fetch_assoc($Recordset1)); ?>
+          <?php do { ?>
+            <tr>
+              <td class="text-center"><?php echo $row_Recordset1['stud_no']; ?></td>
+              <td class="text-center"><a href="detail.php?no=<?php echo $row_Recordset1['stud_no']; ?>"><?php echo $row_Recordset1['stud_name']; ?></a></td>
+              <td class="text-center"><?php echo $row_Recordset1['stud_sex']; ?></td>
+              <td class="text-center"><?php echo $row_Recordset1['stud_birthday']; ?></td>
+              <td class="text-center"><?php echo $row_Recordset1['stud_idno']; ?></td>
+              <td><?php echo $row_Recordset1['stud_school']; ?></td>
+              <td><?php echo $row_Recordset1['stud_department']; ?></td>
+              <td class="text-center"><?php echo $row_Recordset1['stud_phone']; ?></td>
+              <td class="text-center"><?php echo $row_Recordset1['stud_hits']; ?></td>
+            </tr>
+          <?php } while ($row_Recordset1 = mysql_fetch_assoc($Recordset1)); ?>
         </tbody>
       </table>
-        <p>紀錄 <?php echo ($startRow_Recordset1 + 1) ?> 到 <?php echo min($startRow_Recordset1 + $maxRows_Recordset1, $totalRows_Recordset1) ?> 共 <?php echo $totalRows_Recordset1 ?> </p>
-        <p>
-            <span><a href="<?php printf("%s?pageNum_Recordset1=%d%s", $currentPage, 0, $queryString_Recordset1); ?>">第一頁</a> | </span><span><a href="<?php printf("%s?pageNum_Recordset1=%d%s", $currentPage, max(0, $pageNum_Recordset1 - 1), $queryString_Recordset1); ?>">上一頁</a> | </span><span><a href="<?php printf("%s?pageNum_Recordset1=%d%s", $currentPage, min($totalPages_Recordset1, $pageNum_Recordset1 + 1), $queryString_Recordset1); ?>">下一頁</a> | </span><span><a href="<?php printf("%s?pageNum_Recordset1=%d%s", $currentPage, $totalPages_Recordset1, $queryString_Recordset1); ?>">最後一頁</a></span>
-        </p>
-        
-<br />
-      <!-- End Footer -->
+      <p>紀錄 <?php echo ($startRow_Recordset1 + 1) ?> 到 <?php echo min($startRow_Recordset1 + $maxRows_Recordset1, $totalRows_Recordset1) ?> 共 <?php echo $totalRows_Recordset1 ?> </p>
+      <p>
+        <span><a href="<?php printf("%s?pageNum_Recordset1=%d%s", $currentPage, 0, $queryString_Recordset1); ?>">第一頁</a> | </span><span><a href="<?php printf("%s?pageNum_Recordset1=%d%s", $currentPage, max(0, $pageNum_Recordset1 - 1), $queryString_Recordset1); ?>">上一頁</a> | </span><span><a href="<?php printf("%s?pageNum_Recordset1=%d%s", $currentPage, min($totalPages_Recordset1, $pageNum_Recordset1 + 1), $queryString_Recordset1); ?>">下一頁</a> | </span><span><a href="<?php printf("%s?pageNum_Recordset1=%d%s", $currentPage, $totalPages_Recordset1, $queryString_Recordset1); ?>">最後一頁</a></span>
+      </p>
+
+      <br />
 
 
 
