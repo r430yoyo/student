@@ -31,12 +31,8 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 
-$colname_Recordset1 = "-1";
-if (isset($_GET['no'])) {
-  $colname_Recordset1 = $_GET['no'];
-}
 mysql_select_db($database_infoconn, $infoconn);
-$query_Recordset1 = sprintf("SELECT * FROM stud WHERE stud_no = %s", GetSQLValueString($colname_Recordset1, "int"));
+$query_Recordset1 = "SELECT * FROM stud";
 $Recordset1 = mysql_query($query_Recordset1, $infoconn) or die(mysql_error());
 $row_Recordset1 = mysql_fetch_assoc($Recordset1);
 $totalRows_Recordset1 = mysql_num_rows($Recordset1);
@@ -46,12 +42,10 @@ $totalRows_Recordset1 = mysql_num_rows($Recordset1);
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>學員資料管理系統</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
-    integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
   <link rel="shortcut icon" type="image/x-icon" href="style/images/favicon.png" />
   <link rel="stylesheet" type="text/css" href="style.css" media="all" />
+  <link rel="stylesheet" type="text/css" media="screen" href="style/css/prettyPhoto.css" />
   <link href='http://fonts.googleapis.com/css?family=Amaranth' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700,700italic' rel='stylesheet'
     type='text/css'>
@@ -64,7 +58,7 @@ $totalRows_Recordset1 = mysql_num_rows($Recordset1);
   <!--[if IE 9]>
 <link rel="stylesheet" type="text/css" href="style/css/ie9.css" media="all" />
 <![endif]-->
-  <!-- <script type="text/javascript" src="style/js/jquery-1.6.4.min.js"></script> -->
+  <script type="text/javascript" src="style/js/jquery-1.6.4.min.js"></script>
   <script type="text/javascript" src="style/js/ddsmoothmenu.js"></script>
   <script type="text/javascript" src="style/js/jquery.jcarousel.js"></script>
   <script type="text/javascript" src="style/js/jquery.prettyPhoto.js"></script>
@@ -72,11 +66,7 @@ $totalRows_Recordset1 = mysql_num_rows($Recordset1);
   <script type="text/javascript" src="style/js/jquery.flexslider-min.js"></script>
   <script type="text/javascript" src="style/js/jquery.masonry.min.js"></script>
   <script type="text/javascript" src="style/js/jquery.slickforms.js"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"
-    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
-    crossorigin="anonymous"></script>
+
 </head>
 
 <body>
@@ -100,70 +90,41 @@ $totalRows_Recordset1 = mysql_num_rows($Recordset1);
       </div>
       <!-- End Menu -->
 
-
     </div>
     <!-- End Sidebar -->
 
     <!-- Begin Content -->
     <div id="content">
-      <h1 class="title">資料瀏覽</h1>
+      <h1 class="title">圖片總覽</h1>
       <div class="line"></div>
-      <div class="intro">學員詳細資訊</div>
+      <div class="intro">所有學員圖片</div>
 
 
-      <!-- Begin Table -->
-      <br />
-      <div class="line"></div>
-      
-      <table>
-          <tr>
-            <td class="text-center">相片</td>
-            <td colspan="3"><img src="images/<?php echo $row_Recordset1['stud_photo']; ?>" alt="<?php echo $row_Recordset1['stud_photo']; ?>" title="<?php echo $row_Recordset1['stud_photo']; ?>" width="250" height="313" style="display:block; margin:auto;"></td>
-              
-          </tr>
-          <tr>
-            <td class="text-center">姓名</td>
-            <td colspan="3"><?php echo $row_Recordset1['stud_name']; ?></td>
-          </tr>
-          <tr>
-            <td class="text-center">性別</td>
-            <td colspan="3"><?php echo $row_Recordset1['stud_sex']; ?></td>
-          </tr>
-          <tr>
-            <td class="text-center">出生日期</td>
-            <td colspan="3"><?php echo $row_Recordset1['stud_birthday']; ?></td>
-          </tr>
-          <tr>
-            <td class="text-center">身分證字號</td>
-            <td colspan="3"><?php echo $row_Recordset1['stud_idno']; ?></td>
-          </tr>
-          <tr>
-            <td class="text-center">畢業學校</td>
-            <td colspan="3"><?php echo $row_Recordset1['stud_school']; ?></td>
-          </tr>
-          <tr>
-            <td class="text-center">科系</td>
-            <td colspan="3"><?php echo $row_Recordset1['stud_department']; ?></td>
-          </tr>
-          <tr>
-            <td class="text-center">行動電話</td>
-            <td colspan="3"><?php echo $row_Recordset1['stud_phone']; ?></td>
-          </tr>
-          <tr>
-            <td class="text-center">地址</td>
-            <td colspan="3"><?php echo $row_Recordset1['stud_address']; ?></td>
-          </tr>
-          <tr>
-            <td class="text-center">簡歷資料(附件檔)</td>
-            <td class="text-center"><span><a href="others/簡歷表(<?php echo $row_Recordset1['stud_name']; ?>).pdf" <?php echo "download"; ?>>簡歷表(<?php echo $row_Recordset1['stud_name']; ?>).pdf</a></span></td>
-              
-            <td class="text-center"><a href="index.html" target="_self">回首頁</a></td>
-            <td class="text-center"><a href="javascript:history.go(-1)">回上一頁</a></td>
-          </tr>
-      </table>
-        
-<br />
-      <!-- End Footer -->
+
+
+      <!-- Begin Portfolio -->
+      <div id="portfolio">
+        <ul id="filtering-nav">
+          <li class="show">分類:</li>
+          <li><a class="all" href="#all">所有</a></li>
+          <li><a class="M" href="#M">男</a></li>
+          <li><a class="F" href="#F">女</a></li>
+        </ul>
+        <div class="clear"></div>
+        <div class="items">
+          <?php do { ?>
+          <div class="box col4 <?php echo $row_Recordset1['stud_sex']; ?>">
+            <div class="image">
+              <a href="./images/<?php echo $row_Recordset1['stud_name']; ?>.jpg" rel="prettyPhoto[portfolio]" title="<?php echo $row_Recordset1['stud_name']; ?>"><span
+                  class="overlay zoom"></span><img src="./images/<?php echo $row_Recordset1['stud_name']; ?>.jpg" alt="" width="183" height="247"/></a>
+            </div>
+            <h4><a href="detail.php?no=<?php echo $row_Recordset1['stud_no']; ?>"><?php echo $row_Recordset1['stud_name']; ?></a></h4>
+          </div>
+            <?php } while ($row_Recordset1 = mysql_fetch_assoc($Recordset1)); ?>
+        </div>
+        <!-- .wrap -->
+      </div>
+      <!-- End Portfolio -->
 
 
 

@@ -117,11 +117,11 @@ $queryString_Recordset1 = sprintf("&totalRows_Recordset1=%d%s", $totalRows_Recor
         <ul>
           <li><a href="index.html" class="active">首頁</a></li>
           <li><a href="tabs-toggle-table.php">資料瀏覽</a></li>
-          <li><a href="blog.html">資料查詢</a></li>
-          <li><a href="portfolio.html">圖片總覽</a></li>
-          <li><a href="contact.html">好站連結</a></li>
-          <li><a href="contact.html">資料刪除</a></li>
-          <li><a href="contact.html">資料異動</a></li>
+          <li><a href="blog.php">資料查詢</a></li>
+          <li><a href="portfolio.php">圖片總覽</a></li>
+          <li><a href="link.html">好站連結</a></li>
+          <li><a href="data_delete.php">資料刪除</a></li>
+          <li><a href="data_edit.php">資料異動</a></li>
         </ul>
       </div>
       <!-- End Menu -->
@@ -146,6 +146,9 @@ $queryString_Recordset1 = sprintf("&totalRows_Recordset1=%d%s", $totalRows_Recor
           <tr>
             <th class="text-center">
               <h4>學號</h4>
+            </th>
+            <th class="text-center">
+              <h4>照片</h4>
             </th>
             <th class="text-center">
               <h4>姓名</h4>
@@ -177,6 +180,7 @@ $queryString_Recordset1 = sprintf("&totalRows_Recordset1=%d%s", $totalRows_Recor
           <?php do { ?>
             <tr>
               <td class="text-center"><?php echo $row_Recordset1['stud_no']; ?></td>
+              <td class="text-center"><a href="detail.php?no=<?php echo $row_Recordset1['stud_no']; ?>"><img src="images/<?php echo $row_Recordset1['stud_photo']; ?>" width="40" height="80" alt=""></a></td>
               <td class="text-center"><a href="detail.php?no=<?php echo $row_Recordset1['stud_no']; ?>"><?php echo $row_Recordset1['stud_name']; ?></a></td>
               <td class="text-center"><?php echo $row_Recordset1['stud_sex']; ?></td>
               <td class="text-center"><?php echo $row_Recordset1['stud_birthday']; ?></td>
