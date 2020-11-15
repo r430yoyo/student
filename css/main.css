@@ -1,0 +1,16 @@
+.nameInput{
+  width: 250px !important;
+}
+
+.passwordInput{
+  width: 250px !important;
+}
+
+.loginImage{
+  margin-left:60px;
+  margin-bottom: 20px;
+}
+
+.feature span{
+  margin-right:5px;
+}

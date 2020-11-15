@@ -94,8 +94,8 @@ $totalRows_Recordset1 = mysql_num_rows($Recordset1);
           <li><a href="blog.php">資料查詢</a></li>
           <li><a href="portfolio.php">圖片總覽</a></li>
           <li><a href="link.html">好站連結</a></li>
-          <li><a href="data_delete.php">資料刪除</a></li>
-          <li><a href="data_edit.php">資料異動</a></li>
+          <li><a href="login.php">資料刪除</a></li>
+          <li><a href="login.php">資料異動</a></li>
         </ul>
       </div>
       <!-- End Menu -->
@@ -161,7 +161,7 @@ $totalRows_Recordset1 = mysql_num_rows($Recordset1);
             <td class="text-center"><a href="javascript:history.go(-1)">回上一頁</a></td>
           </tr>
       </table>
-        
+      <!-- End Table -->
 <br />
       <!-- End Footer -->
 

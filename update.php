@@ -40,8 +40,8 @@
         <li><a href="blog.php">資料查詢</a></li>
         <li><a href="portfolio.php">圖片總覽</a></li>
         <li><a href="link.html">好站連結</a></li>
-        <li><a href="data_delete.php">資料刪除</a></li>
-        <li><a href="data_edit.php">資料異動</a></li>
+        <li><a href="login.php">資料刪除</a></li>
+        <li><a href="login.php">資料異動</a></li>
       </ul>
     </div>
     <!-- End Menu -->
@@ -52,56 +52,56 @@
 	
 	<!-- Begin Content -->
 	<div id="content">
-	<h1 class="title">Get in Touch</h1>
+	<h1 class="title">資料修改</h1>
 	<div class="line"></div>
-	<div class="intro">Nullam id dolor id nibh ultricies vehicula ut id elit. Etiam porta sem malesuada magna mollis euismod. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.</div>
-
-<div class="map">
-   <iframe width="700" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.com/?ie=UTF8&amp;ll=40.959289,29.082184&amp;spn=0.012963,0.022659&amp;z=14&amp;output=embed"></iframe>
-</div>
-    <br /> <br />
-    
-    <h3>Ipsum Tortor Vestibulum Sollicitudin</h3>
-    
-    <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere consectetur est at lobortis. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
   
  <br />
     
-    <!-- Begin Form -->
-          <div class="form-container">
-            <form class="forms" action="contact/form-handler.php" method="post">
-              <fieldset>
-                <ol>
-                  <li class="form-row text-input-row">
-                    <label>Name</label>
-                    <input type="text" name="name" value="" class="text-input required" title="" />
-                  </li>
-                  <li class="form-row text-input-row">
-                    <label>Email</label>
-                    <input type="text" name="email" value="" class="text-input required email" title="" />
-                  </li>
-                  <li class="form-row text-input-row">
-                    <label>Subject</label>
-                    <input type="text" name="subject" value="" class="text-input required" title="" />
-                  </li>
-                  <li class="form-row text-area-row">
-                    <label>Message</label>
-                    <textarea name="message" class="text-area required"></textarea>
-                  </li>
-                  <li class="form-row hidden-row">
-                    <input type="hidden" name="hidden" value="" />
-                  </li>
-                  <li class="button-row">
-                    <input type="submit" value="Submit" name="submit" class="btn-submit" />
-                  </li>
-                </ol>
-                <input type="hidden" name="v_error" id="v-error" value="Required" />
-                <input type="hidden" name="v_email" id="v-email" value="Enter a valid email" />
-              </fieldset>
-            </form>
-            <div class="response"></div>
-          </div>
-        <!-- End Form -->
+ <table>
+          <tr>
+            <td class="text-center">相片</td>
+            <td colspan="3"><img src="images/" alt="" title="" width="250" height="313" style="display:block; margin:auto;"></td>
+              
+          </tr>
+          <tr>
+            <td class="text-center">姓名</td>
+            </td>
+          </tr>
+          <tr>
+            <td class="text-center">性別</td>
+            <td colspan="3"></td>
+          </tr>
+          <tr>
+            <td class="text-center">出生日期</td>
+            <td colspan="3"></td>
+          </tr>
+          <tr>
+            <td class="text-center">身分證字號</td>
+            <td colspan="3"></td>
+          </tr>
+          <tr>
+            <td class="text-center">畢業學校</td>
+            <td colspan="3"></td>
+          </tr>
+          <tr>
+            <td class="text-center">科系</td>
+            <td colspan="3"></td>
+          </tr>
+          <tr>
+            <td class="text-center">行動電話</td>
+            <td colspan="3"></td>
+          </tr>
+          <tr>
+            <td class="text-center">地址</td>
+            <td colspan="3"></td>
+          </tr>
+          <tr>
+            <td class="text-center">簡歷資料(附件檔)</td>   
+            <td class="text-center">簡歷資料(附件檔)</td>   
+            <td class="text-center"><a href="index.html" target="_self">回首頁</a></td>
+            <td class="text-center"><a href="javascript:history.go(-1)">回上一頁</a></td>
+          </tr>
+      </table>
     
     
 <!-- Begin Footer -->

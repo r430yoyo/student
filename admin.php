@@ -1,10 +1,84 @@
+<?php require_once('Connections/infoconn.php'); ?>
+<?php
+if (!function_exists("GetSQLValueString")) {
+function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
+{
+  if (PHP_VERSION < 6) {
+    $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
+  }
+
+  $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
+
+  switch ($theType) {
+    case "text":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;    
+    case "long":
+    case "int":
+      $theValue = ($theValue != "") ? intval($theValue) : "NULL";
+      break;
+    case "double":
+      $theValue = ($theValue != "") ? doubleval($theValue) : "NULL";
+      break;
+    case "date":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;
+    case "defined":
+      $theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
+      break;
+  }
+  return $theValue;
+}
+}
+
+$currentPage = $_SERVER["PHP_SELF"];
+
+$maxRows_Recordset1 = 10;
+$pageNum_Recordset1 = 0;
+if (isset($_GET['pageNum_Recordset1'])) {
+  $pageNum_Recordset1 = $_GET['pageNum_Recordset1'];
+}
+$startRow_Recordset1 = $pageNum_Recordset1 * $maxRows_Recordset1;
+
+mysql_select_db($database_infoconn, $infoconn);
+$query_Recordset1 = "SELECT * FROM stud ORDER BY stud_no ASC";
+$query_limit_Recordset1 = sprintf("%s LIMIT %d, %d", $query_Recordset1, $startRow_Recordset1, $maxRows_Recordset1);
+$Recordset1 = mysql_query($query_limit_Recordset1, $infoconn) or die(mysql_error());
+$row_Recordset1 = mysql_fetch_assoc($Recordset1);
+
+if (isset($_GET['totalRows_Recordset1'])) {
+  $totalRows_Recordset1 = $_GET['totalRows_Recordset1'];
+} else {
+  $all_Recordset1 = mysql_query($query_Recordset1);
+  $totalRows_Recordset1 = mysql_num_rows($all_Recordset1);
+}
+$totalPages_Recordset1 = ceil($totalRows_Recordset1/$maxRows_Recordset1)-1;
+
+$queryString_Recordset1 = "";
+if (!empty($_SERVER['QUERY_STRING'])) {
+  $params = explode("&", $_SERVER['QUERY_STRING']);
+  $newParams = array();
+  foreach ($params as $param) {
+    if (stristr($param, "pageNum_Recordset1") == false && 
+        stristr($param, "totalRows_Recordset1") == false) {
+      array_push($newParams, $param);
+    }
+  }
+  if (count($newParams) != 0) {
+    $queryString_Recordset1 = "&" . htmlentities(implode("&", $newParams));
+  }
+}
+$queryString_Recordset1 = sprintf("&totalRows_Recordset1=%d%s", $totalRows_Recordset1, $queryString_Recordset1);
+?>
 <!DOCTYPE HTML>
 <html lang="en-US">
 
 <head>
   <meta charset="UTF-8">
   <title>學員資料管理系統</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
   <link rel="shortcut icon" type="image/x-icon" href="style/images/favicon.png" />
+  <link rel="stylesheet" type="text/css" href="css/main.css" media="all" />
   <link rel="stylesheet" type="text/css" href="style.css" media="all" />
   <link href='http://fonts.googleapis.com/css?family=Amaranth' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700,700italic' rel='stylesheet'
@@ -26,6 +100,8 @@
   <script type="text/javascript" src="style/js/jquery.flexslider-min.js"></script>
   <script type="text/javascript" src="style/js/jquery.masonry.min.js"></script>
   <script type="text/javascript" src="style/js/jquery.slickforms.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -43,8 +119,8 @@
           <li><a href="blog.php">資料查詢</a></li>
           <li><a href="portfolio.php">圖片總覽</a></li>
           <li><a href="link.html">好站連結</a></li>
-          <li><a href="data_delete.php">資料刪除</a></li>
-          <li><a href="data_edit.php">資料異動</a></li>
+          <li><a href="login.php">資料刪除</a></li>
+          <li><a href="login.php">資料異動</a></li>
         </ul>
       </div>
       <!-- End Menu -->
@@ -55,104 +131,70 @@
 
     <!-- Begin Content -->
     <div id="content">
-      <h1 class="title">Welcome</h1>
-      <div class="line"></div>
-      <div class="intro">Nullam id dolor id nibh ultricies vehicula ut id elit. Etiam porta sem malesuada magna mollis
-        euismod. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.</div>
-
-      <!-- Begin Slider -->
-      <div id="slider">
-
-        <div class="flexslider">
-          <ul class="slides">
-            <li><img src="style/images/art/slide1.jpg" alt="" /></li>
-            <li><img src="style/images/art/slide2.jpg" alt="" /></li>
-            <li><img src="style/images/art/slide3.jpg" alt="" /></li>
-            <li><img src="style/images/art/slide4.jpg" alt="" /></li>
-          </ul>
-        </div>
-
-      </div>
-      <!-- End Slider -->
-
-
-      <h3>Ipsum Tortor Vestibulum Sollicitudin</h3>
-
-      <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Lorem ipsum dolor sit amet,
-        consectetur adipiscing elit. Sed posuere consectetur est at lobortis. Cum sociis natoque penatibus et magnis dis
-        parturient montes, nascetur ridiculus mus. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-
-
-
-      <div class="one-half">
-        <h3><img src="style/images/icon-web.png" alt="" />Web Design</h3>
-        <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Morbi leo risus, porta ac consectetur ac,
-          vestibulum at eros. Praesent commodo cursus magna.</p>
-      </div>
-
-      <div class="one-half last">
-        <h3><img src="style/images/icon-illus.png" alt="" />Illustration</h3>
-        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Duis mollis, est non commodo luctus, nisi
-          erat porttitor ligula, eget lacinia odio sem nec elit.</p>
-      </div>
-
-      <div class="clear"></div>
-
-
-
-      <div class="one-half">
-        <h3><img src="style/images/icon-motion.png" alt="" />Motion Graphic</h3>
-        <p>Vestibulum id ligula porta felis euismod semper. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</p>
-      </div>
-
-      <div class="one-half last">
-        <h3><img src="style/images/icon-pack.png" alt="" />Package Design</h3>
-        <p>Nulla vitae elit libero, a pharetra augue. Cum sociis natoque penatibus et magnis dis parturient montes,
-          posuere velit aliquet. Donec id elit non mi porta gravida. </p>
-      </div>
-
-      <div class="clear"></div>
-
+      <h1 class="title">管理介面</h1>
       <div class="line"></div>
 
-      <!-- Begin Latest Works -->
-      <h2>Latest Works</h2>
-      <div class="carousel">
-        <div id="carousel-scroll"><a href="#" id="prev"></a><a href="#" id="next"></a></div>
-        <ul>
-          <li> <a href="#"> <span class="overlay details"></span><img src="style/images/art/p1.jpg" alt="" /> </a> </li>
-          <li> <a href="#"> <span class="overlay details"></span><img src="style/images/art/p2.jpg" alt="" /> </a> </li>
-          <li> <a href="#"> <span class="overlay details"></span><img src="style/images/art/p3.jpg" alt="" /> </a> </li>
-          <li> <a href="#"> <span class="overlay details"></span><img src="style/images/art/p4.jpg" alt="" /> </a> </li>
-          <li> <a href="#"> <span class="overlay details"></span><img src="style/images/art/p5.jpg" alt="" /> </a> </li>
-          <li> <a href="#"> <span class="overlay details"></span><img src="style/images/art/p6.jpg" alt="" /> </a> </li>
-          <li> <a href="#"> <span class="overlay details"></span><img src="style/images/art/p7.jpg" alt="" /> </a> </li>
-          <li> <a href="#"> <span class="overlay details"></span><img src="style/images/art/p8.jpg" alt="" /> </a> </li>
-          <li> <a href="#"> <span class="overlay details"></span><img src="style/images/art/p9.jpg" alt="" /> </a> </li>
-          <li> <a href="#"> <span class="overlay details"></span><img src="style/images/art/p10.jpg" alt="" /> </a>
-          </li>
-          <li> <a href="#"> <span class="overlay details"></span><img src="style/images/art/p11.jpg" alt="" /> </a>
-          </li>
-          <li> <a href="#"> <span class="overlay details"></span><img src="style/images/art/p12.jpg" alt="" /> </a>
-          </li>
-        </ul>
-      </div>
-      <!-- End Latest Works -->
+      <!-- Begin Table -->
+      <br>
+      <table>
+        <thead>
+          <tr>
+            <th class="text-center">
+              <h4>學號</h4>
+            </th>
+            <th class="text-center">
+              <h4>照片</h4>
+            </th>
+            <th class="text-center">
+              <h4>姓名</h4>
+            </th>
+            <th class="text-center">
+              <h4>性別</h4>
+            </th>
+            <th class="text-center">
+              <h4>出生日期</h4>
+            </th>
+            <th class="text-center">
+              <h4>身分證字號</h4>
+            </th>
+            <th>
+              <h4>畢業學校</h4>
+            </th>
+            <th>
+              <h4>科系</h4>
+            </th>
+            <th class="text-center">
+              <h4>行動電話</h4>
+            </th>
+            <th class="text-center">
+              <h4>資料處理</h4>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php do { ?>
+  <tr>
+    <td class="text-center"><?php echo $row_Recordset1['stud_no']; ?></td>
+    <td class="text-center"><img src="images/<?php echo $row_Recordset1['stud_photo']; ?>"  width="40" height="80" style="display:block; margin:auto;" alt=""></td>
+    <td class="text-center"><?php echo $row_Recordset1['stud_name']; ?></td>
+    <td class="text-center"><?php echo $row_Recordset1['stud_sex']; ?></td>
+    <td class="text-center"><?php echo $row_Recordset1['stud_birthday']; ?></td>
+    <td class="text-center"><?php echo $row_Recordset1['stud_idno']; ?></td>
+    <td><?php echo $row_Recordset1['stud_school']; ?></td>
+    <td><?php echo $row_Recordset1['stud_department']; ?></td>
+    <td class="text-center"><?php echo $row_Recordset1['stud_phone']; ?></td>
+    <td class="text-center feature"><span>修改</span><span>刪除</span></td>
+  </tr>
+  <?php } while ($row_Recordset1 = mysql_fetch_assoc($Recordset1)); ?>
+        </tbody>
+      </table>
 
-      <div class="line"></div>
+      <p>紀錄 <?php echo ($startRow_Recordset1 + 1) ?> 到 <?php echo min($startRow_Recordset1 + $maxRows_Recordset1, $totalRows_Recordset1) ?> 共 <?php echo $totalRows_Recordset1 ?> </p>
+      <p>
+        <span><a href="<?php printf("%s?pageNum_Recordset1=%d%s", $currentPage, 0, $queryString_Recordset1); ?>">第一頁</a> | </span><span><a href="<?php printf("%s?pageNum_Recordset1=%d%s", $currentPage, max(0, $pageNum_Recordset1 - 1), $queryString_Recordset1); ?>">上一頁</a> | </span><span><a href="<?php printf("%s?pageNum_Recordset1=%d%s", $currentPage, min($totalPages_Recordset1, $pageNum_Recordset1 + 1), $queryString_Recordset1); ?>">下一頁</a> | </span><span><a href="<?php printf("%s?pageNum_Recordset1=%d%s", $currentPage, $totalPages_Recordset1, $queryString_Recordset1); ?>">最後一頁</a></span>
+      </p>
 
-      <h3>Malesuada Condimentum Inceptos Vehicula</h3>
-      <p>Sed posuere consectetur est at lobortis. Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.
-        Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</p>
-
-      <ul>
-        <li>Sed posuere consectetur est at lobortis, Nullam id dolor id nibh ultricies vehicula. Lorem ipsum dolor sit
-          amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </li>
-        <li>Maecenas sed diam eget risus varius blandit sit amet non magna.</li>
-      </ul>
-
+      <!-- End Table -->
 
       <!-- Begin Footer -->
       <div id="footer">
@@ -181,3 +223,6 @@
 </body>
 
 </html>
+<?php
+mysql_free_result($Recordset1);
+?>
