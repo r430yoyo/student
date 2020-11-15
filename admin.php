@@ -136,6 +136,7 @@ $queryString_Recordset1 = sprintf("&totalRows_Recordset1=%d%s", $totalRows_Recor
 
       <!-- Begin Table -->
       <br>
+      <a href="add.php" target="_self"><img src="images/add_icon.png" class="addIcon" alt=""></a>
       <table>
         <thead>
           <tr>
@@ -176,14 +177,14 @@ $queryString_Recordset1 = sprintf("&totalRows_Recordset1=%d%s", $totalRows_Recor
   <tr>
     <td class="text-center"><?php echo $row_Recordset1['stud_no']; ?></td>
     <td class="text-center"><img src="images/<?php echo $row_Recordset1['stud_photo']; ?>"  width="40" height="80" style="display:block; margin:auto;" alt=""></td>
-    <td class="text-center"><?php echo $row_Recordset1['stud_name']; ?></td>
+    <td class="text-center"><a href="update.php?no=<?php echo $row_Recordset1['stud_no']; ?>"><?php echo $row_Recordset1['stud_name']; ?></a></td>
     <td class="text-center"><?php echo $row_Recordset1['stud_sex']; ?></td>
     <td class="text-center"><?php echo $row_Recordset1['stud_birthday']; ?></td>
     <td class="text-center"><?php echo $row_Recordset1['stud_idno']; ?></td>
     <td><?php echo $row_Recordset1['stud_school']; ?></td>
     <td><?php echo $row_Recordset1['stud_department']; ?></td>
     <td class="text-center"><?php echo $row_Recordset1['stud_phone']; ?></td>
-    <td class="text-center feature"><span>修改</span><span>刪除</span></td>
+    <td class="text-center feature"><a href="update.php?no=<?php echo $row_Recordset1['stud_no']; ?>"><span>修改</span></a><span><a href="delete.php?no=<?php echo $row_Recordset1['stud_no']; ?>">刪除</a></span></td>
   </tr>
   <?php } while ($row_Recordset1 = mysql_fetch_assoc($Recordset1)); ?>
         </tbody>

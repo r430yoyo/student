@@ -36,31 +36,26 @@ if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
-if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE stud SET stud_idno=%s, stud_school=%s, stud_department=%s, stud_phone=%s WHERE stud_no=%s",
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+  $insertSQL = sprintf("INSERT INTO stud (stud_idno, stud_school, stud_department, stud_phone) VALUES (%s, %s, %s, %s)",
                        GetSQLValueString($_POST['stud_idno'], "text"),
                        GetSQLValueString($_POST['stud_school'], "text"),
                        GetSQLValueString($_POST['stud_department'], "text"),
-                       GetSQLValueString($_POST['stud_phone'], "text"),
-                       GetSQLValueString($_POST['stud_no'], "int"));
+                       GetSQLValueString($_POST['stud_phone'], "text"));
 
   mysql_select_db($database_infoconn, $infoconn);
-  $Result1 = mysql_query($updateSQL, $infoconn) or die(mysql_error());
+  $Result1 = mysql_query($insertSQL, $infoconn) or die(mysql_error());
 
-  $updateGoTo = "admin.php";
+  $insertGoTo = "admin.php";
   if (isset($_SERVER['QUERY_STRING'])) {
-    $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
-    $updateGoTo .= $_SERVER['QUERY_STRING'];
+    $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
+    $insertGoTo .= $_SERVER['QUERY_STRING'];
   }
-  header(sprintf("Location: %s", $updateGoTo));
+  header(sprintf("Location: %s", $insertGoTo));
 }
 
-$colname_Recordset1 = "-1";
-if (isset($_GET['no'])) {
-  $colname_Recordset1 = $_GET['no'];
-}
 mysql_select_db($database_infoconn, $infoconn);
-$query_Recordset1 = sprintf("SELECT * FROM stud WHERE stud_no = %s", GetSQLValueString($colname_Recordset1, "int"));
+$query_Recordset1 = "SELECT * FROM stud";
 $Recordset1 = mysql_query($query_Recordset1, $infoconn) or die(mysql_error());
 $row_Recordset1 = mysql_fetch_assoc($Recordset1);
 $totalRows_Recordset1 = mysql_num_rows($Recordset1);
@@ -121,59 +116,52 @@ $totalRows_Recordset1 = mysql_num_rows($Recordset1);
 
     <!-- Begin Content -->
     <div id="content">
-      <h1 class="title">資料修改</h1>
+      <h1 class="title">資料新增</h1>
       <div class="line"></div>
 
       <br />
       <form action="<?php echo $editFormAction; ?>" id="form1" name="form1" method="POST">
         <table>
           <tr>
-            <td class="text-center">相片</td>
-            <td colspan="3"><img src="images/<?php echo $row_Recordset1['stud_photo']; ?>" alt="" title="" width="250" height="313" style="display:block; margin:auto;">
-                <input type="hidden" name="stud_no" id="stud_no" value="<?php echo $row_Recordset1['stud_no']; ?>">
-              </td>
-
-          </tr>
-          <tr>
             <td class="text-center">姓名</td>
-            <td colspan="3"><input name="stud_subject" type="text" id="stud_subject" value="<?php echo $row_Recordset1['stud_name']; ?>" size="30" /></td>
+            <td colspan="3"><input name="stud_subject" type="text" id="stud_subject" value="" size="30" /></td>
           </tr>
           <tr>
             <td class="text-center">性別</td>
             <td colspan="3">
               <label>
-                <input name="sex" type="radio" id="sex_0" value="M" <?php echo $row_Recordset1['stud_sex']=='M' ? 'checked="checked"':''; ?> >
+                <input name="sex" type="radio" id="sex_0" value="M" checked="checked" >
                 男</label>
               <label>
-                <input type="radio" name="sex" value="F" <?php echo $row_Recordset1['stud_sex']=='F' ? 'checked="checked"':''; ?> id="sex_1">
+                <input type="radio" name="sex" value="F" id="sex_1">
                 女</label>
             </td>
           </tr>
           <tr>
             <td class="text-center">出生日期</td>
             <td colspan="3">
-              <input name="stud_birth" type="date" id="stud_birth" value="<?php echo $row_Recordset1['stud_birthday']; ?>" />
+              <input name="stud_birth" type="date" id="stud_birth" value="<? echo date("Y-m-d") ?>" />
             </td>
           </tr>
           <tr>
             <td class="text-center">身分證字號</td>
-            <td colspan="3"><input name="stud_idno" type="text" id="stud_idno" value="<?php echo $row_Recordset1['stud_idno']; ?>" size="30" /> </td>
+            <td colspan="3"><input name="stud_idno" type="text" id="stud_idno" value="" size="30" /> </td>
           </tr>
           <tr>
             <td class="text-center">畢業學校</td>
-            <td colspan="3"><input name="stud_school" type="text" id="stud_school" value="<?php echo $row_Recordset1['stud_school']; ?>" size="30" /></td>
+            <td colspan="3"><input name="stud_school" type="text" id="stud_school" value="" size="30" /></td>
           </tr>
           <tr>
             <td class="text-center">科系</td>
-            <td colspan="3"><input name="stud_department" type="text" id="stud_department" value="<?php echo $row_Recordset1['stud_department']; ?>" size="30" /></td>
+            <td colspan="3"><input name="stud_department" type="text" id="stud_department" value="" size="30" /></td>
           </tr>
           <tr>
             <td class="text-center">行動電話</td>
-            <td colspan="3"><input name="stud_phone" type="text" id="stud_phone" value="<?php echo $row_Recordset1['stud_phone']; ?>" size="30" /></td>
+            <td colspan="3"><input name="stud_phone" type="text" id="stud_phone" value="" size="30" /></td>
           </tr>
           <tr>
             <td class="text-center">地址</td>
-            <td colspan="3"><input name="stud_addr" type="text" id="stud_addr" value="<?php echo $row_Recordset1['stud_address']; ?>" size="60" /></td>
+            <td colspan="3"><input name="stud_addr" type="text" id="stud_addr" value="" size="60" /></td>
           </tr>
           <tr>
             <td class="text-center"></td>
@@ -182,7 +170,7 @@ $totalRows_Recordset1 = mysql_num_rows($Recordset1);
               <input type="button" name="button3" id="button3" value="回主頁面" onclick="window.location='admin.php'" /></td>
           </tr>
         </table>
-        <input type="hidden" name="MM_update" value="form1">
+        <input type="hidden" name="MM_insert" value="form1">
       </form>
 
 
